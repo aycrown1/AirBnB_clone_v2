@@ -118,41 +118,28 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        # Updating the do_create() to allow for object creation with given parameters:
-        # Command syntax: create <Class name> <param 1> <param 2> <param 3>...
-
-        # Splitting 'args' into parts using space as the delimiter
         args_split = args.split(" ")
-        # slicing through the argument to find the class name
         class_name = args_split[0]
-        # checking if the class exists in the 'HBNBCommand.classes' dictionary
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         else:
-            # storing key-value pairs that represent the attributes and their values for initializing an instance of a class
             kwargs = {}
             for i in range(1, len(args_split)):
                 keyValue = args_split[i].split("=")
                 if len(keyValue) == 2:
                     key, value = keyValue
-                    # Handling values enclosed in double quotes and escape with a backslash, removing underscores
                     if value[0] == value[-1] == '"':
                         value = value.replace('"', '\"').replace("_", " ")
                     else:
                         try:
-                            # evaluating to create instances with attribute values of various data types
                             value = eval(value)
                         except (SyntaxError, NameError):
                             continue
                     kwargs[key] = value
-        # If it's empty
         if not kwargs:
-            # create an instance of the class without any additional arguments.
             new_instance = globals()[class_name]()
         else:
-            # If kwargs is not empty,
-            # create an instance of the class and passes the keyword arguments from kwargs
             new_instance = globals()[class_name](**kwargs)
         print(new_instance.id)
         storage.save()
@@ -237,11 +224,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(HBNBCommand.classes[args]).items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
