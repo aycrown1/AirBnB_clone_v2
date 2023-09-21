@@ -1,32 +1,32 @@
 #!/usr/bin/python3
-"""This module defines a class to manage file storage for hbnb clone"""
-import json
 
+"""This module defines a class to manage file storage for hbnb clone"""
+
+import json
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
     __objects = {}
+    def all(self, cls=None):
+        """this returns a dictionary of models currently in storage"""
+        if cls:
+            return {k: v for k, v in FileStorage.__objects.items() if type(v) == cls}  # noqa
 
-    def all(self):
-        """Returns a dictionary of models currently in storage"""
         return FileStorage.__objects
-
     def new(self, obj):
-        """Adds new object to storage dictionary"""
-        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
-
+        """this adds new object to storage dictionary"""
+        FileStorage.__objects.update(
+            {obj.to_dict()['__class__'] + '.' + obj.id: obj})
     def save(self):
-        """Saves storage dictionary to file"""
+        """this saves storage dictionary to file"""
         with open(FileStorage.__file_path, 'w') as f:
             temp = {}
-            temp.update(FileStorage.__objects)
-            for key, val in temp.items():
+            for key, val in FileStorage.__objects.items():
                 temp[key] = val.to_dict()
             json.dump(temp, f)
-
     def reload(self):
-        """Loads storage dictionary from file"""
+        """This Loads storage dictionary from file"""
         from models.base_model import BaseModel
         from models.user import User
         from models.place import Place
@@ -45,26 +45,19 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
+                    FileStorage.__objects[key] = classes[val['__class__']](**val)  # noqa
         except FileNotFoundError:
             pass
-
     def delete(self, obj=None):
-        """Delete obj from __objects if it's inside."""
-        if obj is not None:
-            try:
-                key = "{}.{}".format(obj.__class__.__name__, obj.id)
-                if key in self.__objects:
-                    del self.__objects[key]
-            except(KeyError):
-                pass
+        """this deletes an object from in-memory storage"""
+        if (obj is None):
+            return
 
-    def all(self, cls=None):
-        """Returns a dictionary with all objects by class."""
-        if cls is None:
-            return self.__objects
-        filtered_objects = {}
-        for key, value in self.__objects.items():
-            if cls == value.__class__ or cls == value.__class__.__name__:
-                filtered_objects[key] = value
-        return filtered_objects
+        dict_obj = obj.to_dict()
+        key = "{}.{}".format(dict_obj['__class__'], dict_obj.get("id"))
+
+        if key in FileStorage.__objects.keys():
+            del FileStorage.__objects[key]
+    def close(self):
+        """this deserializes json file to objects"""
+        self.reload()
