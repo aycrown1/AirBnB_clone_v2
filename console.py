@@ -123,26 +123,23 @@ class HBNBCommand(cmd.Cmd):
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        else:
-            kwargs = {}
-            for i in range(1, len(args_split)):
-                keyValue = args_split[i].split("=")
-                if len(keyValue) == 2:
-                    key, value = keyValue
-                    if value[0] == value[-1] == '"':
-                        value = value.replace('"', '\"').replace("_", " ")
-                    else:
-                        try:
-                            value = eval(value)
-                        except (SyntaxError, NameError):
-                            continue
-                    kwargs[key] = value
-        if not kwargs:
-            new_instance = globals()[class_name]()
-        else:
-            new_instance = globals()[class_name](**kwargs)
-        print(new_instance.id)
+
+        # Initialize a new instance based on class_name
+        new_instance = HBNBCommand.classes[class_name]()
+
+        # Parse the remaining arguments and set attributes
+        for i in range(1, len(args_split)):
+            keyValue = args_split[i].split("=")
+            if len(keyValue) == 2:
+                key, value = keyValue
+                if value[0] == value[-1] == '"':
+                    value = value.replace('"', '\"').replace("_", " ")
+                setattr(new_instance, key, value)
+
+        # Add the new instance to storage and save
+        storage.new(new_instance)
         storage.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
