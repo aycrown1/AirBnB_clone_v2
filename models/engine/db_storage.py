@@ -2,6 +2,7 @@
 
 """This module defines a class to manage database storage for hbnb clone"""
 
+
 class DBStorage:
     """This class manages the storage of HBNB models in a mysql database"""
     __engine = None
@@ -26,6 +27,7 @@ class DBStorage:
 
         if (os.getenv('HBNB_TYPE_STORAGE') == 'test'):
             self.__metadata_obj.drop_all(bind=self.__engine, checkfirst=True)
+
     def all(self, cls=None):
         """this returns a dictionary of model instances from the database"""
         from models.state import State
@@ -56,19 +58,23 @@ class DBStorage:
                         {dictified['__class__'] + '.' + object.id: object})
 
         return result_map
+
     def new(self, obj=None):
         """this adds a new object to the current session"""
         if obj is None:
             return None
         self.__session.add(obj)
+
     def save(self):
         """this commits all session changes to the database"""
         self.__session.commit()
+
     def delete(self, obj=None):
         """this deletes the passed object from the database"""
         if obj is None:
             return None
         self.__session.delete(obj)
+
     def reload(self):
         """this creates all tables in the database"""
         from models.city import City
@@ -83,6 +89,7 @@ class DBStorage:
 
         session_factory = sessionmaker(self.__engine, expire_on_commit=False)
         self.__session = scoped_session(session_factory)
+
     def close(self):
         """this closes the current session"""
         self.__session.remove()

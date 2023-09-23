@@ -8,18 +8,21 @@ from sqlalchemy.orm import relationship
 
 import os
 
+
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
     name = Column('name', String(128), nullable=False)
 
-    cities = relationship(
-        'City', backref="state", cascade="all, delete, delete-orphan")
+    cities = relationship('City', backref="state",
+                          cascade="all, delete, delete-orphan")
 
     if os.getenv('HBNB_TYPE_STORAGE') != "db":
         @property
         def cities(self):
-            """Return a list of cities with state_id equal to the current State.id"""  # noqa
+            """
+            Return a list of cities with state_id == the current State.id
+            """
             from models import storage
             from models.city import City
 
