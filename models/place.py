@@ -3,8 +3,7 @@
 import os
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, ForeignKey,
-Integer, Float, Table
+from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 
 place_amenity = Table('place_amenity', Base.metadata,
                       Column('place_id', String(60),

@@ -11,8 +11,8 @@ from os import getenv
 class Amenity(BaseModel, Base):
     """The amenity class, contains name field and places relationship.
     """
+    __tablename__ = "amenities"
     if getenv('HBNB_TYPE_STORAGE') == 'db':
-        __tablename__ = "amenities"
         name = Column('name', String(128), nullable=False)
         place_amenity = relationship('Place',
                                      secondary='place_amenity',
