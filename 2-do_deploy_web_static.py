@@ -11,11 +11,13 @@ import os
 env.hosts = ["52.91.121.146", "3.85.136.181"]
 env.user = "ubuntu"
 
+
 def do_pack():
     """
         return the archive path if archive has generated correctly.
     """
-    local("mkdir -p versions")
+    if not os.path.exists("versions"):
+        local("mkdir versions")
     date = datetime.now().strftime("%Y%m%d%H%M%S")
     archived_f_path = "versions/web_static_{}.tgz".format(date)
     t_gzip_archive = local("tar -cvzf {} web_static".format(archived_f_path))
