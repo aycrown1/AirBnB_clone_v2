@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/home/aycrown1/AirBnB_clone_v2/flask/bin/python
+#!/root/AirBnB_clone_v2/flask/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

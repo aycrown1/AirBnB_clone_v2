@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/data/data/com.termux/files/home/aycrown1/AirBnB_clone_v2/flask"
+set -gx VIRTUAL_ENV "/root/AirBnB_clone_v2/flask"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

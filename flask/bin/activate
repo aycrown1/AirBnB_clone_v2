@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/data/data/com.termux/files/home/aycrown1/AirBnB_clone_v2/flask"
+VIRTUAL_ENV="/root/AirBnB_clone_v2/flask"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
