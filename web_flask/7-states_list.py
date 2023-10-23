@@ -8,14 +8,15 @@ app = Flask(__name__)
 
 @app.teardown_appcontext
 def shutdown(exception=None):
-   """Closes the current SQLAlchemy session after each request.
-   """
-   storage.close()
+    """Closes the current SQLAlchemy session after each request.
+    """
+    storage.close()
 
 
 @app.route("/states_list", strict_slashes=False)
 def states_list():
-    """Displays a list of all State objects present in DBStorage sorted by name.
+    """Displays a list of all State objects
+            present in DBStorage sorted by name.
     """
     states = list(storage.all("State").values())
     states.sort(key=lambda x: x.name)
