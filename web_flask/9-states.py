@@ -18,9 +18,21 @@ def states_list():
     """Displays a list of all State objects
             present in DBStorage sorted by name.
     """
-    states = list(storage.all("State").values())
+    sstates = storage.all("State")
+    if id:
+        state = states.get('State.{}'.format(id))
+        states = [state] if state else []
+    else:
+        states = list(states.values())
     states.sort(key=lambda x: x.name)
-    return render_template('7-states_list.html', states=states)
+    for state in states:
+        state.cities.sort(key=lambda x: x.name)
+    return render_template(
+        '9-states.html',
+        states=states,
+        len=len(states),
+        id=id
+    )
 
 
 if __name__ == "__main__":
