@@ -11,7 +11,7 @@ def hello_hbnb():
     '''
     display “Hello HBNB!”
     '''
-    return "Hello HBNB!"
+    return "Hello HBNB Onepage!"
 
 
 if __name__ == "__main__":
